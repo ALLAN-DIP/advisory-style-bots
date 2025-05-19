@@ -175,3 +175,5 @@ cython_debug/
 
 # fool me twice data
 data/fm2
+
+pytest.ini
