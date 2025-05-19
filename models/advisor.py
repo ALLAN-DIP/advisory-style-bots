@@ -1,3 +1,4 @@
+from typing import List, Dict
 from abc import ABC, abstractmethod
 import json
 
@@ -19,7 +20,7 @@ class Advisor(ABC):
                 self.knowledge_base.append(json.loads(line))
 
     @abstractmethod
-    def get_advice_for(self, query: str) -> str:
+    def get_advice_for(self, query: str) -> List[Dict[str, str]]:
         """
         Abstract method to get advice based on a query.
         
