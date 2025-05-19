@@ -2,7 +2,7 @@ from .advisor import Advisor
 
 class InformationRetrieval(Advisor):
     """
-    Class for information retrieval.
+    Class for information retrieval advisor.
     """
 
     def __init__(self, data_path) -> None:
