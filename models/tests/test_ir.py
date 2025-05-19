@@ -1,6 +1,6 @@
 import pytest
 import os
-from ..information_retrival import InformationRetrieval
+from ..ir import InformationRetrieval
 
 
 @pytest.fixture
