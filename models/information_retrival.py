@@ -1,4 +1,3 @@
-from typing import List, Dict
 from .advisor import Advisor
 
 class InformationRetrieval(Advisor):
@@ -14,31 +13,17 @@ class InformationRetrieval(Advisor):
             data_path (str): Path to the knowledge base.
         """
         super().__init__(data_path)
-    
-    def _retrieve_information(self, query: str) -> str:
-        """
-        Retrieve information based on a query.
-        
-        Args:
-            query (str): The query to retrieve information for. Often the `text` of the json object.
-        
-        Returns:
-            str: The retrieved information.
-        """
-        # TODO: naive implementation, can be improved with more advanced retrieval methods
-        for item in self.knowledge_base:
-            if query in item['text']:
-                return item
 
-    def get_advice_for(self, query: str) -> List[Dict[str, str]]:
+    def get_advice_for(self, statement: str) -> str:
         """
-        Get advice based on a query.
+        Abstract method to get advice based on a statement.
         
         Args:
-            query (str): The query to get advice for. Often an statement to be verified.
+            statement (str): The statement to get advice for.
         
         Returns:
-            str: The advice based on the query.
+            str: The advice based on the statement.
         """
-        item = self._retrieve_information(query)
-        return item['gold_evidence']
+        gold_evidence = self.get_gold_evidence(statement)
+        # TODO: naive concatenation of gold evidence, can be improved to result into more fluent text
+        return ' '.join([evidence['text'] for evidence in gold_evidence])

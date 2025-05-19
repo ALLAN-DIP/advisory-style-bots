@@ -19,15 +19,43 @@ class Advisor(ABC):
             for line in file:
                 self.knowledge_base.append(json.loads(line))
 
-    @abstractmethod
-    def get_advice_for(self, query: str) -> List[Dict[str, str]]:
+    def _retrieve_information(self, query: str) -> str:
         """
-        Abstract method to get advice based on a query.
+        Retrieve information based on a query.
         
         Args:
-            query (str): The query to get advice for. Often an statement to be verified.
+            query (str): The query to retrieve information for. Often the `text` of the json object.
         
         Returns:
-            str: The advice based on the query.
+            str: The retrieved information.
+        """
+        # TODO: naive implementation, can be improved with more advanced retrieval methods
+        for item in self.knowledge_base:
+            if query in item['text']:
+                return item
+
+    def get_gold_evidence(self, statement: str) -> List[Dict[str, str]]:
+        """
+        Get gold evidence based on a statement.
+        
+        Args:
+            statement (str): The statement to get gold evidence for
+        
+        Returns:
+            str: The gold evidence list based on the statement.
+        """
+        item = self._retrieve_information(statement)
+        return item['gold_evidence']
+
+    @abstractmethod
+    def get_advice_for(self, statement: str) -> str:
+        """
+        Abstract method to get advice based on a statement.
+        
+        Args:
+            statement (str): The statement to get advice for.
+        
+        Returns:
+            str: The advice based on the statement.
         """
         pass
