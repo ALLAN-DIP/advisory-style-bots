@@ -6,7 +6,7 @@ class RiskHighlighting(Advisor):
     Class for risk highlighting advisor.
     """
 
-    def __init__(self, data_path) -> None:
+    def __init__(self, data_path: str) -> None:
         """
         Initialize the risk highlighting with a data path.
         
