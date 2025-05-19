@@ -24,16 +24,6 @@ class SocraticQuestioningAdvisor(dspy.Module):
         self.questioner = dspy.ChainOfThought(SocraticQuestioner)
     
     def forward(self, statement: str, hints: List[str]) -> str:
-        """
-        Forward method to get the socratic question based on the statement and hints.
-        
-        Args:
-            statement (str): The statement to be verified.
-            hints (List[str]): The hints to be used for socratic questioning.
-        
-        Returns:
-            str: The socratic question based on the statement and hints.
-        """
         masked_hints = self.masker(statement=statement, hints=hints).masked_hints
         consolidated_hint = self.mixer(hints=masked_hints).consolidated_hint
         question = self.questioner(statement=statement, hint=consolidated_hint).question
@@ -78,4 +68,5 @@ class SocraticQuestioning(Advisor):
         gold_evidence = self.get_gold_evidence(statement)
         hints = [evidence['text'] for evidence in gold_evidence]
         hint, q = self.model(statement=statement, hints=hints)
-        return "\n".join([f"'{hint}'", q])
+        result = f"`{hint}`\nQuestion: `{q}`"
+        return result
