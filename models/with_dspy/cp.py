@@ -13,7 +13,7 @@ class CounterfactualPrompter(dspy.Signature):
     counterfactual_prompt: str = dspy.OutputField(description="The generated counterfactual prompt.")
 
 
-class CounterfactualPromptAdvisor(Advisor):
+class CounterfactualPrompt(Advisor):
     """
     Class for generating counterfactual prompts based on the input statement and hints.
     """
