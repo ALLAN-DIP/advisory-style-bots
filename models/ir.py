@@ -26,4 +26,4 @@ class InformationRetrieval(Advisor):
         """
         gold_evidence = self.get_gold_evidence(statement)
         # TODO: naive concatenation of gold evidence, can be improved to result into more fluent text
-        return ' '.join([evidence['text'] for evidence in gold_evidence])
+        return '\n'.join([f"+ {evidence['text']}" for evidence in gold_evidence])
