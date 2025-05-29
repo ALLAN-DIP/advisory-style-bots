@@ -1,6 +1,6 @@
 from .advisor import Advisor
 
-class InformationRetrieval(Advisor):
+class GoldenRetriever(Advisor):
     """
     Class for information retrieval advisor.
     """
@@ -24,6 +24,5 @@ class InformationRetrieval(Advisor):
         Returns:
             str: The advice based on the statement.
         """
-        evidence_str = self.get_retrieved_evidences_str(statement, shuffle=True)
-        advice = f"Evidence:\n{evidence_str}"
-        return advice
+        gold_evidence = self.get_gold_evidence_str(statement)
+        return f"Evidence:\n{gold_evidence}" if gold_evidence else "No relevant evidence found."
