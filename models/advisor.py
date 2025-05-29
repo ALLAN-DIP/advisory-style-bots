@@ -1,3 +1,4 @@
+import random
 from typing import List, Dict
 from abc import ABC, abstractmethod
 import json
@@ -46,6 +47,61 @@ class Advisor(ABC):
         """
         item = self._retrieve_information(statement)
         return item['gold_evidence']
+    
+    def get_gold_evidence_str(self, statement: str) -> str:
+        """
+        Get gold evidence as a string based on a statement.
+        
+        Args:
+            statement (str): The statement to get gold evidence for.
+        
+        Returns:
+            str: The gold evidence as a string.
+        """
+        evidences = self.get_gold_evidence(statement)
+        return "\n".join([f"[+] {evidence['text']}" for evidence in evidences])
+    
+    def get_retrieved_evidences(self, statement: str) -> List[Dict[str, str]]:
+        """
+        Get retrieved evidences based on a statement.
+        
+        Args:
+            statement (str): The statement to get evidences for
+        
+        Returns:
+            str: The evidence list based on the statement.
+        """
+        item = self._retrieve_information(statement)
+        return item['retrieved_evidence']
+
+    def get_retrieved_evidences_str(self, statement: str, shuffle=False) -> str:
+        """
+        Get hints as a string based on a statement.
+        
+        Args:
+            statement (str): The statement to get hints for.
+            shuffle (bool): Whether to shuffle the evidences or not. Defaults to False.
+        
+        Returns:
+            str: The hints as a string.
+        """
+        evidences = self.get_retrieved_evidences(statement)
+        if shuffle:
+            random.shuffle(evidences)
+        return "\n".join([f"[+] {evidence['text']}" for evidence in evidences])
+    
+    def ir_wiki_text(statement: str) -> str:
+        """
+        Get the wiki text based on a statement.
+        
+        Args:
+            statement (str): The statement to get wiki text for.
+        
+        Returns:
+            str: The wiki text.
+        """
+        #TODO: Implement a method to retrieve wiki text based on the statement
+        pass
 
     @abstractmethod
     def get_advice_for(self, statement: str) -> str:
