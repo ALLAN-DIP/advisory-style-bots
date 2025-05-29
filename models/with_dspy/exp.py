@@ -5,14 +5,23 @@ from  ..advisor import Advisor
 
 class ExplanatoryStyleAdvisor(dspy.Signature):
     """
-    Providing clear and detailed information about the input statement according to the hints.
-    This class is designed to assist users in understanding the reasoning behind the step by step process taken to verify the statement.
-    It aims to provide a comprehensive explanation of the reasoning process, ensuring that users can follow along and grasp the underlying logic.
+    Explanatory-style advisor that helps users understand the reasoning behind a given statement by weaving together supporting information in a clear, standalone narrative.
+
+    This advisor constructs a detailed, step-by-step explanation that demonstrates how the statement can be verified or interrogated using provided evidence. 
+    Crucially, the explanation should *not refer* to the evidence as if it were external or visible to the user. Instead, it should directly incorporate relevant content from the evidence, presenting it as part of a coherent line of reasoning.
+
+    Guidelines for the explanation:
+    - Present a logically ordered chain of thought that builds toward or against the statement.
+    - Integrate evidence naturally, quoting or paraphrasing as needed, so the user feels they have all the necessary context.
+    - Avoid language that implies the user is missing information (e.g., “the evidence says…”).
+    - Do not give a final answer; focus on explaining the reasoning process that would *lead to* a conclusion.
+
+    This advisor is especially useful when transparency, careful reasoning, and user trust are essential.
     """
 
     statement: str = dspy.InputField(description="The statement to be verified.")
-    hints: List[str] = dspy.InputField(description="Hints to guide the reasoning process.")
-    explanation: str = dspy.OutputField(description="The detailed explanation of the reasoning process from hints to a conclusion.")
+    evidence: List[str] = dspy.InputField(description="A list of textual evidence fragments relevant to verifying the statement.")
+    explanation: str = dspy.OutputField(description="A detailed, step-by-step explanation of how the evidence informs the verification of the statement.")
 
 
 class Explanatory(Advisor):
@@ -50,7 +59,7 @@ class Explanatory(Advisor):
         Returns:
             str: The advice based on the statement.
         """
-        gold_evidence = self.get_gold_evidence(statement)
-        hints = [evidence['text'] for evidence in gold_evidence]
-        response = self.model(statement=statement, hints=hints)
-        return response.explanation
+        evidence = [e['text'] for e in self.get_retrieved_evidences(statement)]
+        # evidence_str = self.get_retrieved_evidences_str(statement)
+        response = self.model(statement=statement, evidence=evidence)
+        return f"{response.explanation}"
