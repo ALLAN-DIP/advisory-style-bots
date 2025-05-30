@@ -59,4 +59,4 @@ class CounterfactualPrompt(Advisor):
         evidence = [e['text'] for e in self.get_retrieved_evidences(statement)]
         evidence_str = self.get_retrieved_evidences_str(statement, shuffle=True)
         cp = self.model(statement=statement, evidence=evidence).counterfactual_prompt
-        return f"{evidence_str}\n\n🤔 {cp}"
+        return f"Evidence:\n{evidence_str}\n\n🤔 {cp}"
