@@ -11,17 +11,19 @@ from models.advisor import Advisor
 from models.ir import InformationRetrieval
 from models.rh import RiskHighlighting
 from models.with_dspy.cp import CounterfactualPrompt
-from models.with_dspy.ca import CompareAlternatives
+from models.with_dspy.sa import StateAlternatives
 from models.with_dspy.exp import Explanatory
-from models.with_dspy.sq import SocraticQuestioning
+from models.with_dspy.sq import SocraticQuestioningAfterEvidence
+from models.with_dspy.sq import SocraticQuestioningBeforeEvidence
 
 advice_models: Dict[str, Advisor] = {
     "ir": InformationRetrieval,
     "rh": RiskHighlighting,
     "cp": CounterfactualPrompt,
-    "ca": CompareAlternatives,
+    "sa": StateAlternatives,
     "exp": Explanatory,
-    "sq": SocraticQuestioning,
+    "sq-ae": SocraticQuestioningAfterEvidence,
+    "sq-be": SocraticQuestioningBeforeEvidence
 }
 
 if __name__ == "__main__":
@@ -40,7 +42,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--model",
         type=str,
-        choices=["ir", "rh", "cp", "ca", "exp", "sq", "all"],
+        choices=list(advice_models.keys()) + ["all"],
         default="ir",
         help="Type of model to use for generating advice. Options: 'ir' (Information Retrieval), 'rh' (Risk Highlighting), 'cf' (Counterfactual Prompt), 'ca' (Compare Alternatives), 'exp' (Explanatory), 'sq' (Socratic Questioning), 'all' (use all models)."
     )
@@ -84,7 +86,7 @@ if __name__ == "__main__":
     for model in models:
         model_name = model.__name__.lower()
         advisor_params = {"data_path": data_path}
-        if model_name in ["cp", "ca", "exp", "sq"]:
+        if model_name in ["cp", "sa", "exp", "sq-ae", "sq-be"]:
             advisor_params.update({
                 "api": api,
                 "api_key": api_key,
