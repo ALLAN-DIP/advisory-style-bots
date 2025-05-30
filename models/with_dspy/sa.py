@@ -61,7 +61,7 @@ class StateAlternatives(Advisor):
             str: The advice based on the statement.
         """
         # evidence = [e['text'] for e in self.get_retrieved_evidences(statement)]
-        evidence_str = self.get_retrieved_evidences_str(statement, shuffle=True)
+        evidence_str = self.get_retrieved_evidences_str(statement)
         alternatives = self.model(
             number_of_alternatives=3,
             statement=statement

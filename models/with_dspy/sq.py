@@ -58,7 +58,7 @@ class SocraticQuestioningBeforeEvidence(Advisor):
         Returns:
             str: The advice based on the statement.
         """
-        evidence_str = self.get_retrieved_evidences_str(statement, shuffle=True)
+        evidence_str = self.get_retrieved_evidences_str(statement)
         response = self.model(statement=statement)
         result = f"🧐 {response.question}\n\nEvidence:\n{evidence_str}"
         return result
@@ -118,7 +118,7 @@ class SocraticQuestioningAfterEvidence(Advisor):
         Returns:
             str: The advice based on the statement.
         """
-        evidence_str = self.get_retrieved_evidences_str(statement, shuffle=True)
+        evidence_str = self.get_retrieved_evidences_str(statement)
         evidence = [x['text'] for x in self.get_retrieved_evidences(statement)]
         response = self.model(statement=statement, evidence=evidence)
         result = f"Evidence:\n{evidence_str}\n\n🧐 {response.question}"

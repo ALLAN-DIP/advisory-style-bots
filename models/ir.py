@@ -24,6 +24,6 @@ class InformationRetrieval(Advisor):
         Returns:
             str: The advice based on the statement.
         """
-        evidence_str = self.get_retrieved_evidences_str(statement, shuffle=True)
+        evidence_str = self.get_retrieved_evidences_str(statement)
         advice = f"Evidence:\n{evidence_str}"
         return advice
