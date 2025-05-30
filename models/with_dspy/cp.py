@@ -5,12 +5,21 @@ from  ..advisor import Advisor
 
 class CounterfactualPrompter(dspy.Signature):
     """
-    Counterfactual prompter module for generating counterfactual statements based on the input statement.
-    It outputs the reasons that the hint is not true, talks about the consequences of the hint being false and incentives for misleading.
+    Counterfactual-style advisor that prompts users to reflect on what would follow if the statement were false, even while assuming the evidence and hints are accurate.
+
+    This advisor supports critical thinking by:
+    - Exploring the broader implications or downstream consequences that would arise if the statement does not hold.
+    - Surfacing possible motivations or incentives someone might have for asserting a false or misleading statement.
+    - Drawing on information from the evidence to raise subtle tensions or broader conflicts—not to disprove the statement directly, but to highlight areas of complexity, contradiction in implications, or strategic ambiguity.
+
+    The counterfactual prompt should encourage the user to engage with the possibility that the statement serves an agenda, misleads by omission, or simplifies a more complex reality. It should not rely on clear factual conflicts, but instead evoke critical reflection through nuance and perspective.
+
+    This advisor is useful for encouraging adversarial reasoning, narrative skepticism, and deeper understanding of intent and consequence.
     """
-    statement: str = dspy.InputField(description="The statement to be verified.")
-    hints: List[str] = dspy.InputField(description="Hints to guide the reasoning process.")
-    counterfactual_prompt: str = dspy.OutputField(description="The generated counterfactual prompt.")
+
+    statement: str = dspy.InputField(description="The original statement to be critically examined.")
+    evidence: List[str] = dspy.InputField(description="Evidence fragments that support the statement, which are assumed to be accurate.")
+    counterfactual_prompt: str = dspy.OutputField(description="A prompt encouraging reflection on the consequences of the statement being false, and the potential motivations behind asserting it.")
 
 
 class CounterfactualPrompt(Advisor):
@@ -47,5 +56,7 @@ class CounterfactualPrompt(Advisor):
         Returns:
             str: The generated counterfactual prompt.
         """
-        hints = self.get_gold_evidence(statement)
-        return self.model(statement=statement, hints=hints).counterfactual_prompt
+        evidence = [e['text'] for e in self.get_retrieved_evidences(statement)]
+        evidence_str = self.get_retrieved_evidences_str(statement, shuffle=True)
+        cp = self.model(statement=statement, evidence=evidence).counterfactual_prompt
+        return f"{evidence_str}\n\n🤔 {cp}"
