@@ -60,6 +60,5 @@ class Explanatory(Advisor):
             str: The advice based on the statement.
         """
         evidence = [e['text'] for e in self.get_retrieved_evidences(statement)]
-        # evidence_str = self.get_retrieved_evidences_str(statement)
         response = self.model(statement=statement, evidence=evidence)
-        return f"{response.explanation}"
+        return f"🤓 {response.explanation}"
