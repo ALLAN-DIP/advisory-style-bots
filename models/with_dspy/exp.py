@@ -17,6 +17,7 @@ class ExplanatoryStyleAdvisor(dspy.Signature):
     - Do not give a final answer; focus on explaining the reasoning process that would *lead to* a conclusion.
 
     This advisor is especially useful when transparency, careful reasoning, and user trust are essential.
+    Don't make it long, keep it concise and focused on the implications of the counterfactual, no more than two paragraph.
     """
 
     statement: str = dspy.InputField(description="The statement to be verified.")

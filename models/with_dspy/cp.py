@@ -13,6 +13,7 @@ class CounterfactualPrompter(dspy.Signature):
     3. Asking subtle, reflective questions about whether this counterfactual version aligns or conflicts with the evidence—not through obvious contradictions, but through nuanced tensions, inconsistencies, or missing links.
 
     The prompt encourages users to reason through implications that quietly challenge or reinforce the original statement, guiding them toward a form of proof by contradiction.
+    Don't make it long, keep it concise and focused on the implications of the counterfactual, no more than a paragraph.
     """
 
     statement: str = dspy.InputField(description="The original statement to be critically examined.")
