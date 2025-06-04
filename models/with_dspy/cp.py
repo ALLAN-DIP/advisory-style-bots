@@ -5,16 +5,14 @@ from  ..advisor import Advisor
 
 class CounterfactualPrompter(dspy.Signature):
     """
-    Counterfactual-style advisor that prompts users to reflect on what would follow if the statement were false, even while assuming the evidence and hints are accurate.
+    Counterfactual-style advisor that prompts users to reflect on what would follow if the given statement were false—assuming all provided evidence is still accurate.
 
-    This advisor supports critical thinking by:
-    - Exploring the broader implications or downstream consequences that would arise if the statement does not hold.
-    - Surfacing possible motivations or incentives someone might have for asserting a false or misleading statement.
-    - Drawing on information from the evidence to raise subtle tensions or broader conflicts—not to disprove the statement directly, but to highlight areas of complexity, contradiction in implications, or strategic ambiguity.
+    The prompt should:
+    1. Pose the possibility that the statement is not true and an opposing alternative which is then true.
+    2. Elaborate on the implications of this alternative being true based on the provided evidence.
+    3. Asking subtle, reflective questions about whether this counterfactual version aligns or conflicts with the evidence—not through obvious contradictions, but through nuanced tensions, inconsistencies, or missing links.
 
-    The counterfactual prompt should encourage the user to engage with the possibility that the statement serves an agenda, misleads by omission, or simplifies a more complex reality. It should not rely on clear factual conflicts, but instead evoke critical reflection through nuance and perspective.
-
-    This advisor is useful for encouraging adversarial reasoning, narrative skepticism, and deeper understanding of intent and consequence.
+    The prompt encourages users to reason through implications that quietly challenge or reinforce the original statement, guiding them toward a form of proof by contradiction.
     """
 
     statement: str = dspy.InputField(description="The original statement to be critically examined.")
