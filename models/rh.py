@@ -56,8 +56,8 @@ class RiskHighlighting(Advisor):
             data_path (str): Path to the knowledge base.
         """
         super().__init__(data_path)
-        self.warning_type = random.choice(list(self.warning_messages.keys()))
-        self.warning_message = random.choice(self.warning_messages[self.warning_type])
+        self.warning_type = None
+        self.warning_message = None
 
     def get_advice_for(self, statement: str) -> str:
         """
@@ -69,6 +69,8 @@ class RiskHighlighting(Advisor):
         Returns:
             str: The advice based on the statement.
         """
+        self.warning_type = random.choice(list(self.warning_messages.keys()))
+        self.warning_message = random.choice(self.warning_messages[self.warning_type])
         evidence_str = self.get_retrieved_evidences_str(statement)
         advice = f"Evidence:\n{evidence_str}\n\n⚠️ {self.warning_message}"
         return advice

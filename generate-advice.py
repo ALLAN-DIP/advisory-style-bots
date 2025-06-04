@@ -100,11 +100,21 @@ if __name__ == "__main__":
         for instance in tqdm(data, desc="Generating advice"):
             statement = instance["text"]
             instance['advice'] = {}
+            instance['advisor'] = {}
             hints = InformationRetrieval(data_path=data_path).get_gold_evidence(statement)
             for model_name, advisor in advisors.items():
                 try:
                     advice = advisor.get_advice_for(statement)
                     instance['advice'][model_name] = advice
+                    instance['advisor'][model_name] = {
+                        "name": model_name,
+                        "description": advisor.__doc__.strip() if advisor.__doc__ else "No description available",
+                    }
+                    if model_name == "riskhighlighting":
+                        instance['advisor'][model_name].update({
+                            "warning_type": advisor.warning_type,
+                            "warning_message": advisor.warning_message
+                        })
                 except Exception as e:
                     print(f"Error generating advice from {model_name}: {e}")
                     instance['advice'][model_name] = str(e)
