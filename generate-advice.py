@@ -67,7 +67,11 @@ if __name__ == "__main__":
     print(f"Loaded {len(instances)} instances from {args.data_path}")
 
     random.seed(args.seed)
-    data = random.sample(instances, args.sample_size)
+    if args.sample_size == -1:
+        data = instances
+        print("Using the entire dataset for advice generation.")
+    else:
+        data = random.sample(instances, min(args.sample_size, len(instances)))
     print(f"Sampled {len(data)} instances for advice generation.")
 
     data_path = os.path.join(output_path, f"raw_{data_file_base}_{args.sample_size}_{args.seed}.jsonl")
